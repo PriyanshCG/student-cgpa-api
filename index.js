@@ -1,13 +1,10 @@
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// In-memory database
 const students = [
   { id: 1, name: "Aarav Sharma", branch: "CSE", semester: 8, cgpa: 9.3 },
   { id: 2, name: "Ishita Verma", branch: "IT", semester: 7, cgpa: 8.9 },
@@ -21,17 +18,12 @@ const students = [
   { id: 10, name: "Neha Gupta", branch: "CSE", semester: 6, cgpa: 7.9 }
 ];
 
-
-// ================= ROUTES =================
-
-
-// 1️⃣ GET /students → All students
+//  All students
 app.get("/students", (req, res) => {
   res.status(200).json(students);
 });
 
-
-// 2️⃣ GET /students/topper → Highest CGPA
+//  Highest CGPA
 app.get("/students/topper", (req, res) => {
   if (students.length === 0) {
     return res.status(404).json({ message: "No students found" });
@@ -44,8 +36,7 @@ app.get("/students/topper", (req, res) => {
   res.status(200).json(topper);
 });
 
-
-// 3️⃣ GET /students/average → Average CGPA
+//  Average CGPA
 app.get("/students/average", (req, res) => {
   if (students.length === 0) {
     return res.status(404).json({ message: "No students found" });
@@ -59,16 +50,14 @@ app.get("/students/average", (req, res) => {
   });
 });
 
-
-// 4️⃣ GET /students/count → Total students
+//  Total students
 app.get("/students/count", (req, res) => {
   res.status(200).json({
     totalStudents: students.length
   });
 });
 
-
-// 5️⃣ GET /students/:id → Student by ID
+//  Student by ID
 app.get("/students/:id", (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -83,22 +72,16 @@ app.get("/students/:id", (req, res) => {
   res.status(200).json(student);
 });
 
-
-// 6️⃣ GET /students/branch/:branchName → Students by branch
+//  Students by branch
 app.get("/students/branch/:branchName", (req, res) => {
   const branch = req.params.branchName.toLowerCase();
 
   const result = students.filter(
     s => s.branch.toLowerCase() === branch
   );
-
-  // Justification:
-  // Returning empty array is REST-friendly instead of 404
   res.status(200).json(result);
 });
 
-
-// Server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
